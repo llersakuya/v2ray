@@ -1,0 +1,153 @@
+{
+  "log": {
+    "access": "",
+    "error": "",
+    "loglevel": "warning"
+  },
+  "inbounds": [
+    {
+      "port": 2333,
+      "listen": "127.0.0.1",
+      "protocol": "socks",
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "http",
+          "tls"
+        ]
+      },
+      "settings": {
+        "auth": "noauth",
+        "udp": true,
+        "ip": null,
+        "clients": null
+      },
+      "streamSettings": null
+    }
+  ],
+  "outbounds": [
+    {
+      "tag": "proxy",
+      "protocol": "vmess",
+      "settings": {
+        "vnext": [
+          {
+            "address": "jp01.llersakuya.xyz",
+            "port": 443,
+            "users": [
+              {
+                "id": "22b61de9-4d0d-4c87-b9ad-9e5957de382c",
+                "alterId": 101,
+                "email": "t@t.tt",
+                "security": "aes-128-gcm"
+              }
+            ]
+          }
+        ],
+        "servers": null,
+        "response": null
+      },
+      "streamSettings": {
+        "network": "kcp",
+        "security": "tls",
+        "tlsSettings": null,
+        "tcpSettings": null,
+        "kcpSettings": {
+          "mtu": 1350,
+          "tti": 50,
+          "uplinkCapacity": 12,
+          "downlinkCapacity": 100,
+          "congestion": false,
+          "readBufferSize": 2,
+          "writeBufferSize": 2,
+          "header": {
+            "type": "wireguard",
+            "request": null,
+            "response": null
+          }
+        },
+        "wsSettings": null,
+        "httpSettings": null
+      },
+      "mux": {
+        "enabled": true
+      }
+    },
+    {
+      "tag": "direct",
+      "protocol": "freedom",
+      "settings": {
+        "vnext": null,
+        "servers": null,
+        "response": null
+      },
+      "streamSettings": null,
+      "mux": null
+    },
+    {
+      "tag": "block",
+      "protocol": "blackhole",
+      "settings": {
+        "vnext": null,
+        "servers": null,
+        "response": {
+          "type": "http"
+        }
+      },
+      "streamSettings": null,
+      "mux": null
+    }
+  ],
+  "dns": {
+    "hosts": {
+    "domain:baidu.com": "127.0.0.1"
+    },
+    "servers": [
+      {
+        "address": "114.114.114.114",
+        "port": 53,
+        "domains": [
+          "domain:v2ray.com"
+        ]
+      },
+      "8.8.8.8",
+      "1.1.1.1",
+      "localhost"
+    ]
+  },
+ "routing": {
+    "strategy": "rules",
+    "settings": {
+      "domainStrategy": "IPIfNonMatch",
+      "rules": [
+        {
+          "type": "field",
+          "port": null,
+          "outboundTag": "direct",
+          "ip": [
+            "geoip:private"
+          ],
+          "domain": null
+        },
+        {
+          "type": "field",
+          "port": null,
+          "outboundTag": "direct",
+          "ip": [
+            "geoip:cn"
+          ],
+          "domain": null
+        },
+        {
+          "type": "field",
+          "port": null,
+          "outboundTag": "direct",
+          "ip": null,
+          "domain": [
+            "geosite:cn"
+          ]
+        }
+      ]
+    }
+  }
+}
